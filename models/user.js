@@ -28,6 +28,7 @@ const User = db.define("user", {
         supervisorrole: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false, 
+                defaultValue: false
         }
  });
 

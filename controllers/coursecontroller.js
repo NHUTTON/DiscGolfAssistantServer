@@ -4,9 +4,10 @@ let {validateJWT} = require("../middleware");
 const {models} =require('../models')
    
 router.post('/create', validateJWT, async (req,res) => {
-    const {name, city, state, holes, distance, tee} = req.body.course
+    const {image, name, city, state, holes, distance, tee} = req.body.course
     try{
         await models.CourseModel.create({
+            image: image,
             name: name, 
             city: city, 
             state: state, 
@@ -57,7 +58,7 @@ router.get("/:name", async (req,res) => {
 // UPDATE A COURSE IN THE DATABASE
 
 router.put("/update/:id", validateJWT, async (req, res) => {
-    const {name, city, state, holes, distance, tee} = req.body.course;
+    const {image, name, city, state, holes, distance, tee} = req.body.course;
     const courseId = req.params.id;
     const userId = req.user.id
     const query = {
@@ -67,6 +68,7 @@ router.put("/update/:id", validateJWT, async (req, res) => {
         }
     };
     const updatedCourse = {
+            image: image,
             name: name, 
             city: city, 
             state: state, 

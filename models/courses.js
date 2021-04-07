@@ -8,6 +8,9 @@ const Course = db.define("course", {
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
       },
+      image: {
+        type: DataTypes.STRING
+      },
     name: {
         type: DataTypes.STRING,
         allowNull: false

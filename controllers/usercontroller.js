@@ -4,6 +4,7 @@ const {models} =require('../models')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { UniqueConstraintError } = require('sequelize/lib/errors');
+const { validateJWT } = require('../middleware');
 
 router.post('/register', async (req,res) => {
     const{firstname, lastname, username, password, supervisorrole} = req.body.user;
@@ -77,27 +78,64 @@ res.status(501).send({
 }
 })
 
-router.get('/userinfo', async (req,res) => {
+router.get('/userinfo', validateJWT, async (req,res) => {
 try{
-await models.UserModel.findAll({
-    include: [
-        {
-        model: models.myCoursesModel,
-    }
-  ]
-})
+if (req.user.supervisorrole === true) {
+    await models.UserModel.findAll({
+        include: [{
+            model: models.myCoursesModel,
+        }]
+    })
 .then(
     users => {
         res.status(200).json({
             users: users
         }) 
     }
-)
+)}  else {
+    res.status(403).json({
+        message: "You are not an admin."
+    })
+}
 } catch (err){
 res.status(500).json({
     error: `Failed to retrieve users: ${err}`
+        })
+    }
 })
-}
-})
+
+router.delete("/delete/:id", validateJWT, async(req, res) => {
+    try{
+        if (req.user.supervisorrole === true) {
+            await models.UserModel.destroy({
+                where: {
+                    id: req.params.id
+                },
+                include: [{
+                    model: models.myCoursesModel,
+                }]
+            })
+        .then(
+            users => {
+                res.status(200).json({
+                    message: "User removed from the database.",
+                    users: users
+                }) 
+            }
+        )}  else {
+            res.status(403).json({
+                message: "You are not an admin."
+            })
+        }
+        } catch (err){
+        res.status(500).json({
+            error: `Failed to retrieve users: ${err}`
+                })
+            }
+        })
+
+
+
+
 
 module.exports = router;
