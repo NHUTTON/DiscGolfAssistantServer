@@ -7,14 +7,14 @@ const { UniqueConstraintError } = require('sequelize/lib/errors');
 const { validateJWT } = require('../middleware');
 
 router.post('/register', async (req,res) => {
-    const{firstname, lastname, username, password, supervisorrole} = req.body.user;
+    const{firstname, lastname, username, password, admin} = req.body.user;
     try {
         await models.UserModel.create({
         firstname: firstname,
         lastname: lastname,
         username: username,
         password: bcrypt.hashSync(password, 13),
-        supervisorrole: supervisorrole
+        admin: admin
     })
      .then (user => {
         let token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: 60*60*24});
@@ -80,7 +80,7 @@ res.status(501).send({
 
 router.get('/userinfo', validateJWT, async (req,res) => {
 try{
-if (req.user.supervisorrole === true) {
+if (req.user.admin === true) {
     await models.UserModel.findAll({
         include: [{
             model: models.myCoursesModel,
@@ -106,7 +106,7 @@ res.status(500).json({
 
 router.delete("/delete/:id", validateJWT, async(req, res) => {
     try{
-        if (req.user.supervisorrole === true) {
+        if (req.user.admin === true) {
             await models.UserModel.destroy({
                 where: {
                     id: req.params.id

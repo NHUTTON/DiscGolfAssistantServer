@@ -10,7 +10,33 @@ const MyCourses = db.define("mycourse", {
       },
         review: {
             type: DataTypes.TEXT
-      }
+      },
+      image: {
+        type: DataTypes.STRING
+      },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    city: {
+        type:DataTypes.STRING,
+        allowNull: false,
+    },
+    state: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    holes: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    distance: {
+        type:DataTypes.INTEGER,
+    },
+    tee: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
 });
 
 module.exports = MyCourses

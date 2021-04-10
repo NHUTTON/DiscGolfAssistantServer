@@ -25,7 +25,7 @@ const User = db.define("user", {
     type: DataTypes.STRING,
     allowNull: false,     
                 },
-        supervisorrole: {
+        admin: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false, 
                 defaultValue: false

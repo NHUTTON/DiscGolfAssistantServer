@@ -5,10 +5,17 @@ const {models} =require('../models')
 
 
 router.post('/create', validateJWT, async (req, res) => {
-    const {review, courseId} = req.body.mycourse
+    const {review, image, name, city, state, holes, distance, tee, courseId} = req.body.mycourse
     try {
         await models.myCoursesModel.create({
             review: review,
+            image: image,
+            name: name, 
+            city: city, 
+            state: state, 
+            holes: holes, 
+            distance: distance, 
+            tee: tee,
             courseId: courseId,
             userId: req.user.id
         })
@@ -20,6 +27,7 @@ router.post('/create', validateJWT, async (req, res) => {
             }
         )
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             error: `Failed to add course to your list: ${err}`
         })

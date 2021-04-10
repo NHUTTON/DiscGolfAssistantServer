@@ -1,4 +1,5 @@
 const Express = require('express');
+const { model } = require('../db');
 const router = Express.Router();
 let {validateJWT} = require("../middleware");
 const {models} =require('../models')
@@ -34,7 +35,11 @@ router.post('/create', validateJWT, async (req,res) => {
 
 router.get("/", async (req, res) => {
     try {
-        const courses = await models.CourseModel.findAll();
+        const courses = await models.CourseModel.findAll({
+            include: {
+            model: models.myCoursesModel 
+            }     
+        });
         res.status(200).json(courses);
     } catch (err) {
         res.status(500).json({error:err})
