@@ -7,23 +7,28 @@ const {models} =require('../models')
 router.post('/create', validateJWT, async (req,res) => {
     const {image, name, city, state, holes, distance, tee} = req.body.course
     try{
-        await models.CourseModel.create({
-            image: image,
-            name: name, 
-            city: city, 
-            state: state, 
-            holes: holes, 
-            distance: distance, 
-            tee: tee,
-            userId: req.user.id
-        })
-        .then(course => {
-                res.status(201).json({
-                    course: course,
-                    message: 'Course added to database'
+        if (req.user.admin === true) {
+            await models.CourseModel.create({
+                image: image,
+                name: name, 
+                city: city, 
+                state: state, 
+                holes: holes, 
+                distance: distance, 
+                tee: tee,
+                userId: req.user.id
+            })
+            .then(course => {
+                    res.status(201).json({
+                        course: course,
+                        message: 'Course added to database'
+                    })
                 })
-            }
-        )
+        } else {
+            res.status(403).json({
+                message: "You are not an admin."
+            })
+        }
     } catch (err) {
         res.status(500).json({
             error: `Failed to create course: ${err}`
@@ -82,8 +87,14 @@ router.put("/update/:id", validateJWT, async (req, res) => {
             tee: tee
     };
     try {
-        const update = await models.CourseModel.update(updatedCourse, query);
-        res.status(200).json(update);
+        if (req.user.admin === true)  {
+            const update = await models.CourseModel.update(updatedCourse, query);
+            res.status(200).json(update);
+        } else {
+            res.status(403).json({
+                message: "You are not an admin!"
+            })
+        }
     } catch (err) {
         console.log(err)
         res.status(500).json({error:err});
@@ -101,9 +112,14 @@ router.delete("/delete/:id", validateJWT, async (req, res) => {
                 userId: userId,
             }
         };
-
-        await models.CourseModel.destroy(query);
-        res.status(200).json({message: "Course removed from the database."})
+        if (req.user.admin === true) {
+            await models.CourseModel.destroy(query);
+            res.status(200).json({message: "Course removed from the database."})
+        } else {
+            res.status(403).json({
+                message: "You are not an admin"
+            })
+        }
     } catch (err) {
         res.status(500).json({error:err})
     }
