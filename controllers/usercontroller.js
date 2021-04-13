@@ -28,7 +28,7 @@ router.post('/register', async (req,res) => {
 } catch (err) {
 if (err instanceof UniqueConstraintError) {
     res.status(409).json({
-        message: "Username already exists"
+        message: "Username already exists."
     })
 } else {
     res.status(500).json({
@@ -58,22 +58,22 @@ await models.UserModel.findOne({
                         message: 'Successfully logged in, welcome back!',
                         sessionToken: `Bearer ${token}`
                     })
-                } else {
-                    res.status(502).send({
-                        error: 'bad gateway'
+                } else  {
+                    res.status(401).send({
+                        message: "Username or password is incorrect."
                     })
                 }
             })
         } else {
-            res.status(500).send({
-                error:"failed to authenticate" 
+            res.status(401).send({
+                message: "Username or password is incorrect."
             })
         }
     }
 )
 } catch (err) {
 res.status(501).send({
-    error: 'server does not support this functionality'
+   message: "Failed to login user."
 })
 }
 })
