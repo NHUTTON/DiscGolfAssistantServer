@@ -5,17 +5,10 @@ const {models} =require('../models')
 
 
 router.post('/create', validateJWT, async (req, res) => {
-    const {review, image, name, city, state, holes, distance, tee, courseId} = req.body.mycourse
+    const {review, courseId} = req.body.mycourse
     try {
         await models.myCoursesModel.create({
             review: review,
-            image: image,
-            name: name, 
-            city: city, 
-            state: state, 
-            holes: holes, 
-            distance: distance, 
-            tee: tee,
             courseId: courseId,
             userId: req.user.id
         })
@@ -42,6 +35,9 @@ router.get("/mine", validateJWT, async (req,res) => {
         const userCourseList = await models.myCoursesModel.findAll({
             where: {
                 userId: id
+            }, 
+            include: {
+                model: models.CourseModel
             }
         });
         res.status(200).json(userCourseList);

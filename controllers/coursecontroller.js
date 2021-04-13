@@ -16,7 +16,6 @@ router.post('/create', validateJWT, async (req,res) => {
                 holes: holes, 
                 distance: distance, 
                 tee: tee,
-                userId: req.user.id
             })
             .then(course => {
                     res.status(201).json({
@@ -74,7 +73,6 @@ router.put("/update/:id", validateJWT, async (req, res) => {
     const query = {
         where: {
             id: courseId,
-            userId: userId
         }
     };
     const updatedCourse = {
@@ -103,13 +101,11 @@ router.put("/update/:id", validateJWT, async (req, res) => {
 
 router.delete("/delete/:id", validateJWT, async (req, res) => {
     const courseId = req.params.id;
-    const userId = req.user.id
 
     try {
         const query = {
             where: {
-                id: courseId,
-                userId: userId,
+                id: courseId
             }
         };
         if (req.user.admin === true) {
