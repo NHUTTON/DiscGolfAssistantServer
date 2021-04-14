@@ -16,4 +16,6 @@ Check out the index.js in the models folder to see how each of the models are as
       - Users can have many "myCourses"
       - Courses can have many "myCourses"
 
-If you have any general questions or want to contact me please email me at nickolashutton@gmail.com.
+<hr/>
+<h3 align="center">If you have any general questions or want to contact me please email me at nickolashutton@gmail.com.<h3>
+<hr/>
