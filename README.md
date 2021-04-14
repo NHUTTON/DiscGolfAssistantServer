@@ -13,8 +13,8 @@ There is a "Course" controller that is specifically created for the admin to be 
 There is a "MyCourse" controller that allows users to capture the information from the courses, stored in the database, and store it for their own account and leave a "review".
 
 Check out the index.js in the models folder to see how each of the models are associated with each other. 
-      - Users can have many "myCourses"
-      - Courses can have many "myCourses"
+      <li> Users can have many "myCourses" </li>
+      <li> Courses can have many "myCourses"</li>
 
 <hr/>
 <h3 align="center">If you have any general questions or want to contact me please email me at nickolashutton@gmail.com.<h3>
